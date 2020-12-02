@@ -1,0 +1,26 @@
+package com.hackathon.hackbe.controller;
+
+import com.hackathon.hackbe.entity.User;
+import com.hackathon.hackbe.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class UserController {
+
+    UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    private boolean updatedUsernameValid(String email, Long userId) {
+        User user = userService.getUserById(userId);
+        if (!email.equals(user.getEmail())) {
+            User userTemp = userService.getUserByEmail(email);
+            return userTemp == null || userTemp.getId().equals(userId);
+        }
+        return true;
+    }
+}
