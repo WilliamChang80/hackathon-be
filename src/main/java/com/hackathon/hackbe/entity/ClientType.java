@@ -12,8 +12,6 @@ import javax.persistence.Entity;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends BaseEntity {
-    private String email;
-    private String password;
-    private String phoneNumber;
+public class ClientType extends BaseEntity {
+    private String name;
 }

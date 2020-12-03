@@ -1,9 +1,12 @@
 package com.hackathon.hackbe.dto.response;
 
+import com.hackathon.hackbe.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @NoArgsConstructor
 @Data
@@ -12,4 +15,5 @@ import lombok.NoArgsConstructor;
 public class AuthResponse {
     private String token;
     private UserResponse user;
+    private List<Role> roles;
 }

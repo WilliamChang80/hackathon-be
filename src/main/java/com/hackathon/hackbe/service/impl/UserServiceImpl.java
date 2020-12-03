@@ -3,6 +3,7 @@ package com.hackathon.hackbe.service.impl;
 import com.hackathon.hackbe.dto.request.AuthRequest;
 import com.hackathon.hackbe.dto.response.UserResponse;
 import com.hackathon.hackbe.entity.User;
+import com.hackathon.hackbe.enums.Role;
 import com.hackathon.hackbe.repository.UserRepository;
 import com.hackathon.hackbe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -51,6 +53,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<Role> getUserRoles(Long userId) {
+        return null;
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.getByEmailEquals(email);
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
@@ -60,4 +67,6 @@ public class UserServiceImpl implements UserService {
     private UserResponse convertUserToResponse(User user) {
         return UserResponse.builder().id(user.getId()).email(user.getEmail()).build();
     }
+
+
 }
