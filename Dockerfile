@@ -1,10 +1,14 @@
-FROM gradle:4.2.1-jdk8-alpine
+FROM gradle:6.7.1-jdk8 AS build
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle build --no-daemon
 
-USER root
-RUN chown -R gradle ./
-USER gradle
-RUN gradle wrapper
-RUN ./gradlew build --stacktrace
-COPY build/libs/hack-be-0.0.1-SNAPSHOT.jar demo-docker.jar
+FROM openjdk:8-jre-slim
+
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","demo-docker.jar"]
+
+RUN mkdir /app
+
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/spring-boot-application.jar
+
+ENTRYPOINT ["java","-jar","/app/spring-boot-application.jar"]
