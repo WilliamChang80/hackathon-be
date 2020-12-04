@@ -27,33 +27,9 @@ public class SwaggerConfig {
         return new ApiInfoBuilder().title(SWAGGER_TITLE).build();
     }
 
-    private ApiKey apiKey() {
-        return new ApiKey("JWT", JwtUtil.SECRET_KEY, "header");
-    }
-
-    @Bean
-    SecurityConfiguration security() {
-        return new SecurityConfiguration(null, null, null, null,
-                "Bearer access_token", ApiKeyVehicle.HEADER, "Authorization", ",");
-    }
-
-    private List<SecurityReference> defaultAuth() {
-        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
-        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-        authorizationScopes[0] = authorizationScope;
-        return Arrays.asList(new SecurityReference("JWT", authorizationScopes));
-    }
-
-    private SecurityContext securityContext() {
-        return SecurityContext.builder().securityReferences(defaultAuth()).build();
-    }
-
-
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_12)
-                .securityContexts(Arrays.asList(securityContext()))
-                .securitySchemes(Arrays.asList(apiKey()))
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(CONTROLLER_PATH))
                 .paths(PathSelectors.ant(API_PATH))
