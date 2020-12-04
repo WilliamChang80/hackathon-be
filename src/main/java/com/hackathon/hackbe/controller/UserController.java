@@ -1,13 +1,10 @@
 package com.hackathon.hackbe.controller;
 
-import com.hackathon.hackbe.dto.response.BaseResponse;
 import com.hackathon.hackbe.entity.User;
-import com.hackathon.hackbe.enums.Role;
 import com.hackathon.hackbe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 @RestController
 public class UserController {

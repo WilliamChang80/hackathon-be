@@ -5,6 +5,8 @@ import com.hackathon.hackbe.dto.response.UserResponse;
 import com.hackathon.hackbe.entity.User;
 import com.hackathon.hackbe.enums.Role;
 import com.hackathon.hackbe.repository.UserRepository;
+import com.hackathon.hackbe.service.AgencyService;
+import com.hackathon.hackbe.service.ClientService;
 import com.hackathon.hackbe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,10 +20,16 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     UserRepository userRepository;
+    AgencyService agencyService;
+    ClientService clientService;
+
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, AgencyService agencyService,
+                           ClientService clientService) {
         this.userRepository = userRepository;
+        this.agencyService = agencyService;
+        this.clientService = clientService;
     }
 
 
@@ -54,7 +62,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Role> getUserRoles(Long userId) {
-        return null;
+        List<Role> roles = new ArrayList<>();
+        User user = userRepository.getOne(userId);
+        boolean isAgencyExist = agencyService.isUserExist(user);
+        if (isAgencyExist)
+            roles.add(Role.AGENCIES);
+        boolean isClientExist = clientService.isUserExist(user);
+        if (isClientExist)
+            roles.add(Role.CLIENT);
+
+        return roles;
     }
 
     @Override

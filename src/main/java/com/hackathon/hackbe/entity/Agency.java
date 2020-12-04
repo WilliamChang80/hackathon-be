@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -21,7 +20,7 @@ public class Agency extends BaseEntity {
 
     private String name;
 
-    private String desc;
+    private String description;
 
     private Double rating;
 }

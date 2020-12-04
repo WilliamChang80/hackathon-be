@@ -38,8 +38,7 @@ public class AuthController {
     }
 
     @PostMapping(Url.LOGIN_URL)
-    public BaseResponse createAuthenticationToken(@RequestBody AuthRequest authenticationRequest)
-            throws Exception {
+    public BaseResponse createAuthenticationToken(@RequestBody AuthRequest authenticationRequest) {
         try {
             if (!userService.isValidLoginCredentials(authenticationRequest.getEmail(),
                     authenticationRequest.getPassword())) {
@@ -51,8 +50,8 @@ public class AuthController {
         UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getEmail());
         User user = userService.getUserByEmail(authenticationRequest.getEmail());
         String jwt = jwtUtil.generateToken(userDetails);
-        UserResponse userResponse = UserResponse.builder().id(user.getId()).email(user.getEmail()).build();
         List<Role> roles = userService.getUserRoles(user.getId());
+        UserResponse userResponse = UserResponse.builder().id(user.getId()).email(user.getEmail()).roles(roles).build();
         BaseResponse response = BaseResponse.builder().code(HttpStatus.OK.value()).message("Success").data(
                 AuthResponse.builder().token(jwt).user(userResponse).build()).build();
         return response;
