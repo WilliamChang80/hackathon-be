@@ -26,4 +26,7 @@ public class Client extends BaseEntity{
 
     @OneToOne
     private ClientType clientType;
+
+    @OneToMany
+    private List<Product> services;
 }

@@ -31,4 +31,9 @@ public class ClientServiceImpl implements ClientService {
                 .phoneNumber(clientRequest.getPhoneNumber()).user(user).build();
         clientRepository.save(client);
     }
+
+    @Override
+    public Client getClientByUserId(Long userId) {
+        return clientRepository.getOne(userId);
+    }
 }
