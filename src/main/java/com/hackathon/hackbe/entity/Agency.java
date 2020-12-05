@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.util.List;
@@ -28,6 +29,6 @@ public class Agency extends BaseEntity {
 
     private String phoneNumber;
 
-    @OneToMany
+    @ManyToMany
     private List<ClientType> clientTypes;
 }
