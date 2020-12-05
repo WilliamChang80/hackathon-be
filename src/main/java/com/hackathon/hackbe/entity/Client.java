@@ -22,6 +22,8 @@ public class Client extends BaseEntity{
 
     private String location;
 
-    @OneToMany
-    private List<ClientType> types;
+    private String phoneNumber;
+
+    @OneToOne
+    private ClientType clientType;
 }
