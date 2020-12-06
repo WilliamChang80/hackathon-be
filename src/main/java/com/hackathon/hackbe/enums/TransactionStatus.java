@@ -4,5 +4,6 @@ public enum  TransactionStatus {
     CLOSED,
     WAITING_CONFIRMATION,
     CONFIRMED,
-    PAID
+    PAID,
+    REVIEWED
 }

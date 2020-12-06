@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,6 +67,12 @@ public class AuthController {
                     .build();
         }
         userService.createUser(authenticationRequest);
+        return BaseResponse.builder().code(HttpStatus.OK.value()).message("Success")
+                .build();
+    }
+
+    @GetMapping("/api/user/check")
+    public BaseResponse checkAuth() {
         return BaseResponse.builder().code(HttpStatus.OK.value()).message("Success")
                 .build();
     }
