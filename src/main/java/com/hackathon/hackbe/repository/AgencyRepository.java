@@ -13,4 +13,6 @@ public interface AgencyRepository extends JpaRepository<Agency, Long> {
     boolean existsByUser(User user);
 
     List<Agency> findAllByClientTypes(ClientType type);
+
+    Agency findFirstByUser(User user);
 }
