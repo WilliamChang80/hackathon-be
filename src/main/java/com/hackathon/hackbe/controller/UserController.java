@@ -1,6 +1,7 @@
 package com.hackathon.hackbe.controller;
 
 import com.hackathon.hackbe.dto.entity.AgencyDto;
+import com.hackathon.hackbe.dto.entity.ClientDto;
 import com.hackathon.hackbe.dto.request.AgencyRequest;
 import com.hackathon.hackbe.dto.request.ClientRequest;
 import com.hackathon.hackbe.dto.response.AgencyResponse;
@@ -55,5 +56,25 @@ public class UserController {
         User user = userService.getUserById(clientRequest.getUserId());
         clientService.addClientProfile(clientRequest, user);
         return BaseResponse.builder().code(HttpStatus.OK.value()).message("Success").build();
+    }
+
+    @GetMapping("api/user/{id}/client")
+    public BaseResponse getClientByUserId(@PathVariable Long id) {
+        Client client = clientService.getClientByUserId(id);
+        ClientDto clientDto = ClientDto.builder().clientType(client.getClientType())
+                .location(client.getLocation()).name(client.getName()).phoneNumber(client.getPhoneNumber())
+                .id(client.getId()).build();
+        return BaseResponse.builder().code(HttpStatus.OK.value()).message("Success")
+                .data(clientDto).build();
+    }
+
+    @GetMapping("api/user/{id}/agency")
+    public BaseResponse getAgencyByUserId(@PathVariable Long id) {
+        Agency a = agencyService.getAgencyByUserId(id);
+        AgencyDto agency = AgencyDto.builder().description(a.getDescription())
+                .id(a.getId()).name(a.getName()).phoneNumber(a.getPhoneNumber())
+                .rating(a.getRating()).build();
+        return BaseResponse.builder().code(HttpStatus.OK.value()).message("Success")
+                .data(agency).build();
     }
 }

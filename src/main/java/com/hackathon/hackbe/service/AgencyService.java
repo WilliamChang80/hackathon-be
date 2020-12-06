@@ -15,4 +15,6 @@ public interface AgencyService {
     void addAgencyProfile(AgencyRequest agencyRequest, User user);
 
     List<AgencyDto> getAgencyRecommendation(ClientType type);
+
+    Agency getAgencyByUserId(Long id);
 }

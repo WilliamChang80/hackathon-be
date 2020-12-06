@@ -4,6 +4,7 @@ import com.hackathon.hackbe.dto.request.ClientRequest;
 import com.hackathon.hackbe.entity.Client;
 import com.hackathon.hackbe.entity.User;
 import com.hackathon.hackbe.repository.ClientRepository;
+import com.hackathon.hackbe.repository.UserRepository;
 import com.hackathon.hackbe.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,12 @@ import org.springframework.stereotype.Service;
 public class ClientServiceImpl implements ClientService {
 
     ClientRepository clientRepository;
+    UserRepository userRepository;
 
     @Autowired
-    public ClientServiceImpl(ClientRepository clientRepository) {
+    public ClientServiceImpl(ClientRepository clientRepository, UserRepository userRepository) {
         this.clientRepository = clientRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -34,6 +37,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client getClientByUserId(Long userId) {
-        return clientRepository.getOne(userId);
+        User user = userRepository.getOne(userId);
+        return clientRepository.findFirstByUser(user);
     }
 }

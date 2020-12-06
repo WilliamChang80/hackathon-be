@@ -1,22 +1,21 @@
-package com.hackathon.hackbe.entity;
+package com.hackathon.hackbe.dto.entity;
 
+import com.hackathon.hackbe.entity.ClientType;
+import com.hackathon.hackbe.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.OneToOne;
 
-@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Client extends BaseEntity{
+public class ClientDto {
 
-    @OneToOne
-    private User user;
+    private Long id;
 
     private String name;
 
@@ -24,6 +23,5 @@ public class Client extends BaseEntity{
 
     private String phoneNumber;
 
-    @OneToOne
     private ClientType clientType;
 }

@@ -7,6 +7,7 @@ import com.hackathon.hackbe.entity.Agency;
 import com.hackathon.hackbe.entity.ClientType;
 import com.hackathon.hackbe.entity.User;
 import com.hackathon.hackbe.repository.AgencyRepository;
+import com.hackathon.hackbe.repository.UserRepository;
 import com.hackathon.hackbe.service.AgencyService;
 import com.hackathon.hackbe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,13 @@ import java.util.stream.Collectors;
 public class AgencyServiceImpl implements AgencyService {
 
     AgencyRepository agencyRepository;
+    UserRepository userRepository;
 
     @Autowired
-    public AgencyServiceImpl(AgencyRepository agencyRepository) {
+    public AgencyServiceImpl(AgencyRepository agencyRepository,
+                             UserRepository userRepository) {
         this.agencyRepository = agencyRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -48,5 +52,11 @@ public class AgencyServiceImpl implements AgencyService {
                 .rating(c.getRating()).id(c.getId()).build()
         ).collect(Collectors.toList());
         return agencies;
+    }
+
+    @Override
+    public Agency getAgencyByUserId(Long id) {
+        User user = userRepository.getOne(id);
+        return agencyRepository.findFirstByUser(user);
     }
 }
