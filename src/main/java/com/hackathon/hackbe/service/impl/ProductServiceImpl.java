@@ -29,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> getServices() {
         List<Product> ps = productRepository.findAll();
-        List<ProductDto> products = ps.stream().map(p -> ProductDto.builder()
+        List<ProductDto> products = ps.stream().map(p -> ProductDto.builder().id(p.getId())
                 .name(p.getName()).description(p.getDescription()).priceEnd(p.getPriceEnd())
                 .priceStart(p.getPriceStart()).type(p.getType()).build()).collect(Collectors.toList());
         return products;
@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto getProductById(Long productId) {
         Product p = productRepository.getOne(productId);
-        return ProductDto.builder()
+        return ProductDto.builder().id(productId)
                 .name(p.getName()).description(p.getDescription()).priceEnd(p.getPriceEnd())
                 .priceStart(p.getPriceStart()).type(p.getType()).build();
     }
@@ -75,6 +75,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDto> getProductByAgency(Long agencyId) {
         List<Product> ps = productRepository.findAllByAgency_Id(agencyId);
         List<ProductDto> products = ps.stream().map(p -> ProductDto.builder()
+                .id(p.getId())
                 .name(p.getName()).description(p.getDescription()).priceEnd(p.getPriceEnd())
                 .priceStart(p.getPriceStart()).type(p.getType()).build()).collect(Collectors.toList());
         return products;
