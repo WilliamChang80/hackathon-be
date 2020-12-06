@@ -1,24 +1,29 @@
 package com.hackathon.hackbe.entity;
 
 import com.hackathon.hackbe.enums.TransactionStatus;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Transaction extends BaseEntity{
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class Transaction extends BaseEntity {
     @OneToOne
-    Client client;
+    private Client client;
 
     @OneToOne
-    Agency agency;
+    private Agency agency;
 
-    TransactionStatus status;
+    private TransactionStatus status;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    List<TransactionDetail> transactionDetails;
-
+    @ManyToMany
+    private List<TransactionDetail> transactionDetails;
 }
