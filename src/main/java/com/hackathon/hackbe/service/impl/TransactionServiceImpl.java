@@ -3,12 +3,10 @@ package com.hackathon.hackbe.service.impl;
 import com.hackathon.hackbe.dto.entity.TransactionDetailDto;
 import com.hackathon.hackbe.dto.entity.TransactionDto;
 import com.hackathon.hackbe.dto.request.CreateTransactionRequest;
-import com.hackathon.hackbe.entity.Product;
-import com.hackathon.hackbe.entity.Transaction;
-import com.hackathon.hackbe.entity.TransactionDetail;
+import com.hackathon.hackbe.dto.request.ReviewRequest;
+import com.hackathon.hackbe.entity.*;
 import com.hackathon.hackbe.enums.TransactionStatus;
-import com.hackathon.hackbe.repository.TransactionDetailRepository;
-import com.hackathon.hackbe.repository.TransactionRepository;
+import com.hackathon.hackbe.repository.*;
 import com.hackathon.hackbe.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,12 +22,19 @@ public class TransactionServiceImpl implements TransactionService {
 
     TransactionRepository transactionRepository;
     TransactionDetailRepository transactionDetailRepository;
+    ReviewRepository reviewRepository;
+    AgencyRepository agencyRepository;
 
     @Autowired
-    public TransactionServiceImpl(TransactionRepository transactionRepository,
-                                  TransactionDetailRepository transactionDetailRepository) {
+    public TransactionServiceImpl
+            (TransactionRepository transactionRepository,
+                                  TransactionDetailRepository transactionDetailRepository,
+                                  ReviewRepository reviewRepository,
+             AgencyRepository agencyRepository) {
         this.transactionRepository = transactionRepository;
         this.transactionDetailRepository = transactionDetailRepository;
+        this.reviewRepository = reviewRepository;
+        this.agencyRepository = agencyRepository;
     }
 
     @Override
@@ -123,5 +128,17 @@ public class TransactionServiceImpl implements TransactionService {
                         }).collect(Collectors.toList())).build()
         ).collect(Collectors.toList());
         return transactions;
+    }
+
+    @Override
+    public void reviewTransaction(Long id, ReviewRequest request) {
+        Transaction transaction = transactionRepository.getOne(id);
+        Review review = Review.builder().description(request.getDescription())
+                .rating(request.getRating()).transaction(transaction).build();
+        reviewRepository.save(review);
+        Double ratingTotal = reviewRepository.getAvg(transaction.getAgency().getId());
+        //update client rating
+        Client client = transaction.getClient();
+        client.setRating(ratingTotal);
     }
 }

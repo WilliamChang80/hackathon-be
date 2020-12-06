@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDto {
+    private Long id;
     private String name;
     private ServiceType type;
     private String description;

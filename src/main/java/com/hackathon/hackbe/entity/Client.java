@@ -26,4 +26,7 @@ public class Client extends BaseEntity{
 
     @OneToOne
     private ClientType clientType;
+
+    @Column(columnDefinition = "double default 0")
+    private Double rating;
 }

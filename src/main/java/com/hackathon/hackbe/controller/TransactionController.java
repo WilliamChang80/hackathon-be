@@ -2,6 +2,7 @@ package com.hackathon.hackbe.controller;
 
 import com.hackathon.hackbe.dto.entity.TransactionDto;
 import com.hackathon.hackbe.dto.request.CreateTransactionRequest;
+import com.hackathon.hackbe.dto.request.ReviewRequest;
 import com.hackathon.hackbe.dto.response.BaseResponse;
 import com.hackathon.hackbe.entity.Transaction;
 import com.hackathon.hackbe.service.TransactionService;
@@ -61,4 +62,12 @@ public class TransactionController {
         return BaseResponse.builder().code(HttpStatus.OK.value()).message("Success")
                 .data(transactions).build();
     }
+
+    @PostMapping("/api/transaction/{id}/review")
+    public BaseResponse reviewTransaction(@PathVariable Long id, @RequestBody
+                                          ReviewRequest request) {
+        transactionService.reviewTransaction(id, request);
+        return BaseResponse.builder().code(HttpStatus.OK.value()).message("Success").build();
+    }
+
 }
