@@ -1,11 +1,14 @@
 package com.hackathon.hackbe.controller;
 
 import com.hackathon.hackbe.dto.entity.TransactionDto;
+import com.hackathon.hackbe.dto.request.ConfirmTransactionRequest;
 import com.hackathon.hackbe.dto.request.CreateTransactionRequest;
 import com.hackathon.hackbe.dto.request.ReviewRequest;
+import com.hackathon.hackbe.dto.request.TermRequest;
 import com.hackathon.hackbe.dto.response.BaseResponse;
 import com.hackathon.hackbe.entity.Transaction;
 import com.hackathon.hackbe.service.TransactionService;
+import com.mysql.cj.ServerPreparedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -31,15 +34,16 @@ public class TransactionController {
     }
 
     @PostMapping("/api/transaction/{id}/update")
-    public BaseResponse updateTransaction(@RequestBody CreateTransactionRequest request, @PathVariable Long id) {
+    public BaseResponse updateTransaction(@RequestBody TermRequest request, @PathVariable Long id) {
         transactionService.updateTransaction(request,id);
         return BaseResponse.builder().code(HttpStatus.OK.value()).message("Success").build();
     }
 
     //accept the transaction
     @PostMapping("/api/transaction/{id}/confirm")
-    public BaseResponse confirmTransaction(@PathVariable Long id) {
-        transactionService.confirmTransaction(id);
+    public BaseResponse confirmTransaction(@RequestBody ConfirmTransactionRequest request,
+                                           @PathVariable Long id) {
+        transactionService.confirmTransaction(request, id);
         return BaseResponse.builder().code(HttpStatus.OK.value()).message("Success").build();
     }
 
