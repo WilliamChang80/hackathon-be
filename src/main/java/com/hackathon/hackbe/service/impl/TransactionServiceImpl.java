@@ -11,7 +11,6 @@ import com.hackathon.hackbe.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,7 +106,7 @@ public class TransactionServiceImpl implements TransactionService {
         map.put(TransactionStatus.WAITING_CONFIRMATION, "Waiting confirmation");
         map.put(TransactionStatus.CONFIRMED, "Confirmed");
         map.put(TransactionStatus.PAID, "Paid");
-
+        map.put(TransactionStatus.REVIEWED, "Reviewed");
         return map.get(status);
     }
 
@@ -133,6 +132,8 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public void reviewTransaction(Long id, ReviewRequest request) {
         Transaction transaction = transactionRepository.getOne(id);
+        transaction.setStatus(TransactionStatus.REVIEWED);
+        transactionRepository.save(transaction);
         Review review = Review.builder().description(request.getDescription())
                 .rating(request.getRating()).transaction(transaction).build();
         reviewRepository.save(review);
