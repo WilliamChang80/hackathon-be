@@ -23,17 +23,19 @@ public class TransactionServiceImpl implements TransactionService {
     TransactionDetailRepository transactionDetailRepository;
     ReviewRepository reviewRepository;
     AgencyRepository agencyRepository;
+    ClientRepository clientRepository;
 
     @Autowired
     public TransactionServiceImpl
             (TransactionRepository transactionRepository,
                                   TransactionDetailRepository transactionDetailRepository,
                                   ReviewRepository reviewRepository,
-             AgencyRepository agencyRepository) {
+             AgencyRepository agencyRepository, ClientRepository clientRepository) {
         this.transactionRepository = transactionRepository;
         this.transactionDetailRepository = transactionDetailRepository;
         this.reviewRepository = reviewRepository;
         this.agencyRepository = agencyRepository;
+        this.clientRepository = clientRepository;
     }
 
     @Override
@@ -54,6 +56,7 @@ public class TransactionServiceImpl implements TransactionService {
     public void confirmTransaction(Long transactionId) {
         Transaction transaction = transactionRepository.getOne(transactionId);
         transaction.setStatus(TransactionStatus.CONFIRMED);
+        transactionRepository.save(transaction);
     }
 
     @Override
@@ -73,12 +76,14 @@ public class TransactionServiceImpl implements TransactionService {
     public void payTransaction(Long transactionId) {
         Transaction transaction = transactionRepository.getOne(transactionId);
         transaction.setStatus(TransactionStatus.PAID);
+        transactionRepository.save(transaction);
     }
 
     @Override
     public void closeTransaction(Long transactionId) {
         Transaction transaction = transactionRepository.getOne(transactionId);
         transaction.setStatus(TransactionStatus.CLOSED);
+        transactionRepository.save(transaction);
     }
 
     @Override
@@ -141,5 +146,6 @@ public class TransactionServiceImpl implements TransactionService {
         //update client rating
         Client client = transaction.getClient();
         client.setRating(ratingTotal);
+        clientRepository.save(client);
     }
 }
