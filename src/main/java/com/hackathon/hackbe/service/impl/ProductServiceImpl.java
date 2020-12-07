@@ -84,6 +84,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> ps = productRepository.findAllByAgency_Id(agencyId);
         List<ProductDto> products = ps.stream().map(p -> ProductDto.builder()
                 .id(p.getId())
+                .agencyId(agencyId)
                 .name(p.getName()).description(p.getDescription()).priceEnd(p.getPriceEnd())
                 .priceStart(p.getPriceStart()).type(p.getType()).build()).collect(Collectors.toList());
         return products;
