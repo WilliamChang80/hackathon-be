@@ -15,4 +15,5 @@ public interface AgencyRepository extends JpaRepository<Agency, Long> {
     List<Agency> findAllByClientTypes(ClientType type);
 
     Agency findFirstByUser(User user);
+    List<Agency> findAllByNameContains(String query);
 }

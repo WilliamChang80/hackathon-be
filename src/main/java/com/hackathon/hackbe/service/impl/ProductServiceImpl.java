@@ -1,12 +1,16 @@
 package com.hackathon.hackbe.service.impl;
 
+import com.hackathon.hackbe.dto.entity.AgencyDto;
 import com.hackathon.hackbe.dto.entity.ProductDto;
 import com.hackathon.hackbe.dto.request.ProductRequest;
+import com.hackathon.hackbe.dto.response.SearchResponse;
 import com.hackathon.hackbe.entity.Agency;
 import com.hackathon.hackbe.entity.ClientType;
 import com.hackathon.hackbe.entity.Product;
+import com.hackathon.hackbe.entity.ServiceType;
 import com.hackathon.hackbe.repository.AgencyRepository;
 import com.hackathon.hackbe.repository.ProductRepository;
+import com.hackathon.hackbe.repository.ServiceTypeRepository;
 import com.hackathon.hackbe.service.AgencyService;
 import com.hackathon.hackbe.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +24,14 @@ public class ProductServiceImpl implements ProductService {
 
     ProductRepository productRepository;
     AgencyRepository agencyRepository;
+    ServiceTypeRepository serviceTypeRepository;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, AgencyRepository agencyRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, AgencyRepository agencyRepository,
+                              ServiceTypeRepository serviceTypeRepository) {
         this.productRepository = productRepository;
         this.agencyRepository = agencyRepository;
+        this.serviceTypeRepository = serviceTypeRepository;
     }
 
     @Override
@@ -83,7 +90,29 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDto> getProductBySearch(String query) {
-        return null;
+    public SearchResponse getProductBySearch(String query) {
+        List<ServiceType> serviceTypes = serviceTypeRepository.findAllByNameContains(query);
+        List<Product> products = productRepository.findAllByNameContains(query);
+        List<Agency> agencies = agencyRepository.findAllByNameContains(query);
+        SearchResponse response = SearchResponse.builder().products(products.stream().map(p -> ProductDto.builder()
+                .id(p.getId())
+                .name(p.getName()).description(p.getDescription()).priceEnd(p.getPriceEnd())
+                .priceStart(p.getPriceStart()).type(p.getType()).build()).collect(Collectors.toList())).agencies(
+                        agencies.stream().map(c -> AgencyDto.builder().description(c.getDescription())
+                                .name(c.getName()).phoneNumber(c.getPhoneNumber())
+                                .rating(c.getRating()).id(c.getId()).build()
+                        ).collect(Collectors.toList())).serviceTypes(serviceTypes).build();
+        return response;
+    }
+
+    @Override
+    public List<ProductDto> getProductByServiceId(Long id) {
+        ServiceType serviceType = serviceTypeRepository.getOne(id);
+        List<Product> ps = productRepository.findAllByType(serviceType);
+        List<ProductDto> products = ps.stream().map(p -> ProductDto.builder()
+                .id(p.getId())
+                .name(p.getName()).description(p.getDescription()).priceEnd(p.getPriceEnd())
+                .priceStart(p.getPriceStart()).type(p.getType()).build()).collect(Collectors.toList());
+        return products;
     }
 }

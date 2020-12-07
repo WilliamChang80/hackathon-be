@@ -3,6 +3,7 @@ package com.hackathon.hackbe.controller;
 import com.hackathon.hackbe.dto.entity.ProductDto;
 import com.hackathon.hackbe.dto.request.ProductRequest;
 import com.hackathon.hackbe.dto.response.BaseResponse;
+import com.hackathon.hackbe.dto.response.SearchResponse;
 import com.hackathon.hackbe.entity.Agency;
 import com.hackathon.hackbe.entity.Product;
 import com.hackathon.hackbe.service.AgencyService;
@@ -69,7 +70,14 @@ public class ProductController {
 
     @GetMapping("api/services/search")
     public BaseResponse searchWithKeyword(@RequestParam String query) {
-        List<ProductDto> products = productService.getProductBySearch(query);
+        SearchResponse products = productService.getProductBySearch(query);
+        return BaseResponse.builder().code(HttpStatus.OK.value()).message("Success")
+                .data(products).build();
+    }
+
+    @GetMapping("api/services/type/{id}")
+    public BaseResponse getProductByServiceType(@PathVariable Long id) {
+        List<ProductDto> products = productService.getProductByServiceId(id);
         return BaseResponse.builder().code(HttpStatus.OK.value()).message("Success")
                 .data(products).build();
     }
