@@ -2,8 +2,10 @@ package com.hackathon.hackbe.service.impl;
 
 import com.hackathon.hackbe.dto.entity.TransactionDetailDto;
 import com.hackathon.hackbe.dto.entity.TransactionDto;
+import com.hackathon.hackbe.dto.request.ConfirmTransactionRequest;
 import com.hackathon.hackbe.dto.request.CreateTransactionRequest;
 import com.hackathon.hackbe.dto.request.ReviewRequest;
+import com.hackathon.hackbe.dto.request.TermRequest;
 import com.hackathon.hackbe.entity.*;
 import com.hackathon.hackbe.enums.TransactionStatus;
 import com.hackathon.hackbe.repository.*;
@@ -28,8 +30,8 @@ public class TransactionServiceImpl implements TransactionService {
     @Autowired
     public TransactionServiceImpl
             (TransactionRepository transactionRepository,
-                                  TransactionDetailRepository transactionDetailRepository,
-                                  ReviewRepository reviewRepository,
+             TransactionDetailRepository transactionDetailRepository,
+             ReviewRepository reviewRepository,
              AgencyRepository agencyRepository, ClientRepository clientRepository) {
         this.transactionRepository = transactionRepository;
         this.transactionDetailRepository = transactionDetailRepository;
@@ -53,23 +55,18 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public void confirmTransaction(Long transactionId) {
+    public void confirmTransaction(ConfirmTransactionRequest request, Long transactionId) {
         Transaction transaction = transactionRepository.getOne(transactionId);
         transaction.setStatus(TransactionStatus.CONFIRMED);
+        transaction.setTerm(request.getTerms());
         transactionRepository.save(transaction);
     }
 
     @Override
-    public void updateTransaction(CreateTransactionRequest request, Long id) {
+    public void updateTransaction(TermRequest request, Long id) {
         Transaction transaction = transactionRepository.getOne(id);
-        for (TransactionDetail detail : request.getServices()) {
-            TransactionDetail td = transactionDetailRepository.getOne(detail.getId());
-            td.setDeadline(detail.getDeadline());
-            td.setPrice(detail.getPrice());
-            td.setQuantity(detail.getQuantity());
-            td.setTerm(detail.getTerm());
-            transactionDetailRepository.save(td);
-        }
+        transaction.setTerm(request.getTerm());
+        transactionRepository.save(transaction);
     }
 
     @Override

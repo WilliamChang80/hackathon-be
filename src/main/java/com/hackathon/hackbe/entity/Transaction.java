@@ -26,4 +26,6 @@ public class Transaction extends BaseEntity {
 
     @ManyToMany
     private List<TransactionDetail> transactionDetails;
+
+    private String term;
 }

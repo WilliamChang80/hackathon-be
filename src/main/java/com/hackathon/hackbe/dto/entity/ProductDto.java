@@ -19,4 +19,5 @@ public class ProductDto {
     private String description;
     private int priceStart;
     private int priceEnd;
+    private Long agencyId;
 }
