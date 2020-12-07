@@ -59,4 +59,13 @@ public class AgencyServiceImpl implements AgencyService {
         User user = userRepository.getOne(id);
         return agencyRepository.findFirstByUser(user);
     }
+
+    @Override
+    public AgencyDto getAgencyById(Long id) {
+        Agency c = agencyRepository.getOne(id);
+        AgencyDto agencyDto = AgencyDto.builder().description(c.getDescription())
+                .name(c.getName()).phoneNumber(c.getPhoneNumber())
+                .rating(c.getRating()).id(c.getId()).build();
+        return agencyDto;
+    }
 }

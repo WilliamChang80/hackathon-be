@@ -62,12 +62,12 @@ public class ChatServiceImpl implements ChatService {
                 .client(UserDto.builder().id(client.getId()).name(client.getName()).build())
                 .messages(chat.getMessages().stream().map(
                         c -> {
-                            String name;
+                            String name = "Admin";
                             if (chat.getAgency().getUser().getId().equals(c.getUser().getId())) {
                                 name = chat.getAgency().getName();
                             } else if (chat.getClient().getUser().getId().equals(c.getUser().getId())) {
                                 name = chat.getClient().getName();
-                            } else name = "Admin";
+                            }
                             return MessageDto.builder().date(c.getCreatedAt()).message(c.getMessage())
                                     .name(name).build();
                         }).collect(Collectors.toList())
