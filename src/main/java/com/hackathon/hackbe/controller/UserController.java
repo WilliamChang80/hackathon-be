@@ -44,6 +44,14 @@ public class UserController {
     }
 
 
+    @GetMapping("/api/agency/{id}")
+    public BaseResponse getAgencyById(@PathVariable Long id) {
+        Client client = clientService.getClientByUserId(id);
+        List<AgencyDto> agencies = agencyService.getAgencyRecommendation(client.getClientType());
+        return BaseResponse.builder().code(HttpStatus.OK.value()).message("Success").
+                data(AgencyResponse.builder().agencies(agencies).build()).build();
+    }
+
     @PostMapping(Url.ADD_AGENCY_PROFILE_URL)
     public BaseResponse addAgencyProfile(@RequestBody AgencyRequest agencyRequest) {
         User user = userService.getUserById(agencyRequest.getUserId());

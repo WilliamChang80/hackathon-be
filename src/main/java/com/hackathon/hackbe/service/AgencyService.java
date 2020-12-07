@@ -17,4 +17,6 @@ public interface AgencyService {
     List<AgencyDto> getAgencyRecommendation(ClientType type);
 
     Agency getAgencyByUserId(Long id);
+
+    AgencyDto getAgencyById(Long id);
 }
