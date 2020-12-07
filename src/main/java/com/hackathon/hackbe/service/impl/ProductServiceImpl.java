@@ -3,6 +3,7 @@ package com.hackathon.hackbe.service.impl;
 import com.hackathon.hackbe.dto.entity.ProductDto;
 import com.hackathon.hackbe.dto.request.ProductRequest;
 import com.hackathon.hackbe.entity.Agency;
+import com.hackathon.hackbe.entity.ClientType;
 import com.hackathon.hackbe.entity.Product;
 import com.hackathon.hackbe.repository.AgencyRepository;
 import com.hackathon.hackbe.repository.ProductRepository;
@@ -79,5 +80,10 @@ public class ProductServiceImpl implements ProductService {
                 .name(p.getName()).description(p.getDescription()).priceEnd(p.getPriceEnd())
                 .priceStart(p.getPriceStart()).type(p.getType()).build()).collect(Collectors.toList());
         return products;
+    }
+
+    @Override
+    public List<ProductDto> getProductBySearch(String query) {
+        return null;
     }
 }

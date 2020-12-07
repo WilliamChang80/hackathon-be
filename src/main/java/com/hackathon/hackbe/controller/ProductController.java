@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -66,4 +67,10 @@ public class ProductController {
         return BaseResponse.builder().code(HttpStatus.OK.value()).message("Success").build();
     }
 
+    @GetMapping("api/services/search")
+    public BaseResponse searchWithKeyword(@RequestParam String query) {
+        List<ProductDto> products = productService.getProductBySearch(query);
+        return BaseResponse.builder().code(HttpStatus.OK.value()).message("Success")
+                .data(products).build();
+    }
 }

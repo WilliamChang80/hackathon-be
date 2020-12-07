@@ -4,6 +4,7 @@ import com.hackathon.hackbe.dto.entity.MessageDto;
 import com.hackathon.hackbe.dto.entity.UserDto;
 import com.hackathon.hackbe.dto.request.ChatRequest;
 import com.hackathon.hackbe.dto.request.MessageRequest;
+import com.hackathon.hackbe.dto.response.ChatResponse;
 import com.hackathon.hackbe.dto.response.MessageResponse;
 import com.hackathon.hackbe.entity.*;
 import com.hackathon.hackbe.repository.*;
@@ -11,6 +12,7 @@ import com.hackathon.hackbe.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -71,5 +73,23 @@ public class ChatServiceImpl implements ChatService {
                         }).collect(Collectors.toList())
                 ).build();
         return response;
+    }
+
+    @Override
+    public List<ChatResponse> getChatByClient(Long id) {
+        List<Chat> chats = chatRepository.findAllByClient_Id(id);
+        List<ChatResponse> responses = chats.stream().map(
+                c -> ChatResponse.builder().id(c.getId()).name(c.getAgency().getName()).build()
+        ).collect(Collectors.toList());
+        return responses;
+    }
+
+    @Override
+    public List<ChatResponse> getChatByAgency(Long id) {
+        List<Chat> chats = chatRepository.findAllByAgency_Id(id);
+        List<ChatResponse> responses = chats.stream().map(
+                c -> ChatResponse.builder().id(c.getId()).name(c.getClient().getName()).build()
+        ).collect(Collectors.toList());
+        return responses;
     }
 }

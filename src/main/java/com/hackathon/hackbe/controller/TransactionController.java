@@ -63,6 +63,13 @@ public class TransactionController {
                 .data(transactions).build();
     }
 
+    @GetMapping("/api/transaction/client/{id}")
+    public BaseResponse getTransactionsByClient(@PathVariable Long id) {
+        List<TransactionDto> transactions = transactionService.getTransactionByClient(id);
+        return BaseResponse.builder().code(HttpStatus.OK.value()).message("Success")
+                .data(transactions).build();
+    }
+
     @PostMapping("/api/transaction/{id}/review")
     public BaseResponse reviewTransaction(@PathVariable Long id, @RequestBody
                                           ReviewRequest request) {
